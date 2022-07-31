@@ -1,45 +1,15 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 public class BonusServiceTest {
-
-    @Test
-    public void shouldCalcBonusIfSmallAmountAndRegistered() {
+    @ParameterizedTest
+    @CsvFileSource(resources = {"/data.csv"})
+    public void testCalcBonus(int amount, boolean registered, int expected) {
         BonusService service = new BonusService();
 
-        long actual = service.calculate(1_000, true);
-        long expected = 30;
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldCalcBonusIfHugeAmountAndRegistered() {
-        BonusService service = new BonusService();
-
-        long actual = service.calculate(1_000_000, true);
-        long expected = 500;
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldCalcBonusIfSmallAmountAndNotRegistered() {
-        BonusService service = new BonusService();
-
-        long actual = service.calculate(1_000, false);
-        long expected = 10;
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldCalcBonusIfHugeAmountAndNotRegistered() {
-        BonusService service = new BonusService();
-
-        long actual = service.calculate(1_000_000, false);
-        long expected = 500;
+        long actual = service.calculate(amount, registered);
 
         assertEquals(expected, actual);
     }
